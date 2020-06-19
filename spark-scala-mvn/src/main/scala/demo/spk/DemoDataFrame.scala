@@ -38,12 +38,12 @@ object DemoDataFrame extends App {
   val fields = schemaString.split(" ").map(fieldName => StructField(fieldName, StringType, nullable = true))
   val schema = StructType(fields)
   val rdd2 = inputRdd.map(field => Row(field(0), field(1).trim))
-  df = spark.createDataFrame(rdd2, schema)
+  //  df = spark.createDataFrame(rdd2, schema)
 
-  //  showDf(df)
+  showDf(df)
   /** df 输出为文件 */
   //  df.select("name","age").write.format("csv").save("output/op_people.csv")
-  df.rdd.saveAsTextFile("output/op_people.txt")
+  //  df.rdd.saveAsTextFile("output/op_people.txt")
   println("============")
 
   private def showDf(df: DataFrame) = {

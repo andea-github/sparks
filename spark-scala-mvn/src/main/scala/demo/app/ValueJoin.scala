@@ -1,7 +1,5 @@
 package demo.app
 
-import java.io.File
-
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 import utils.MyFileUtil
@@ -9,7 +7,9 @@ import utils.MyFileUtil
 /**
  * 连接操作
  *
- * 开发测试集  https://grouplens.org/datasets/movielens/
+ * 开发测试集
+ * 官网 https://grouplens.org/datasets/movielens/
+ * 其他 http://files.grouplens.org/datasets/movielens/
  * 使用数据集ml-1m 连接 ratings.dat 和 movies.dat，获取评分超过4.0的电影列表
  * 数据格式：
  * movies.dat   mid::Title::Genres

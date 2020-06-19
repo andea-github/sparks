@@ -8,6 +8,7 @@ import java.io.File
  * @author admin 2020-5-25
  */
 object MyFileUtil {
+  var inputPath = "file:///".concat("C:/tatas/spark/")
 
   /**
    * 删除文件夹及其子文件

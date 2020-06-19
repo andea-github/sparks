@@ -65,7 +65,6 @@
     </dependency>
     <!-- Scala: end -->
 
-
     <!-- Spark: start -->
     <dependency>
       <groupId>org.apache.spark</groupId>
@@ -80,6 +79,11 @@
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-streaming_2.11</artifactId>
+      <version>${spark_2.11.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-mllib_2.11</artifactId>
       <version>${spark_2.11.version}</version>
     </dependency>
 
