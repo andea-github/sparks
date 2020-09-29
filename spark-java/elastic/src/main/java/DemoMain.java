@@ -9,7 +9,7 @@ public class DemoMain {
 
     public static void main(String[] args) {
         EsConfig esConfig = new EsConfig();
-        System.out.println(esConfig.getNodes());
+//        System.out.println(esConfig.getNodes());
         Properties properties = new Properties();
     }
 }

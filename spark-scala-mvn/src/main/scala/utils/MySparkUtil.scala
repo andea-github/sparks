@@ -15,7 +15,15 @@ object MySparkUtil {
     new SparkContext(conf)
   }
 
+  def sc(appName: String) = {
+    conf.setMaster("local").setAppName(appName)
+    val sparkContext = new SparkContext(conf)
+    sparkContext.setLogLevel("WARN")
+    sparkContext
+  }
+
   def spark(master: String, appName: String) = {
     SparkSession.builder().master(master).appName(appName).getOrCreate()
   }
+
 }

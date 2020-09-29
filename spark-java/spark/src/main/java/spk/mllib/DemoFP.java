@@ -7,8 +7,11 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.mllib.fpm.AssociationRules;
 import org.apache.spark.mllib.fpm.FPGrowth;
 import org.apache.spark.mllib.fpm.FPGrowthModel;
+import scala.Tuple2;
 import scala.collection.immutable.Map;
+import spk.core.DmPairRDD;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,12 +35,26 @@ public class DemoFP {
     public static void main(String[] args) {
         String input = data_path.concat("growth_chars.txt");
         initArgs(args);
-        JavaRDD<List<String>> transactions = getDataSet(input);
-
+//        JavaRDD<List<String>> transactions = getDataSet(input);
+//        System.out.println(transactions.take(3));
+        JavaRDD<List<String>> listRdd = DmPairRDD.getStringArrayListJavaPairRDD()
+                .map((Function<Tuple2<String, ArrayList<Integer>>, List<Integer>>) v1 -> v1._2)
+                .map((Function<List<Integer>, List<String>>) v1 -> {
+                    List<String> list = new ArrayList<>();
+                    for (Integer v : v1) {
+                        list.add(v.toString());
+                    }
+                    return list;
+                });
+        System.out.println(listRdd.take(3));
         //创建FPGrowth的算法实例，同时设置好训练时的最小支持度和数据分区
         FPGrowth fpGrowth = new FPGrowth().setMinSupport(0).setNumPartitions(numPartition);
-        FPGrowthModel<String> model = fpGrowth.run(transactions);//执行算法
+        FPGrowthModel<String> model = fpGrowth.run(listRdd);//执行算法 transactions
+        simpleGrowthModel(model);
 
+    }
+
+    private static void simpleGrowthModel(FPGrowthModel<String> model) {
         /**
          * 查看所有频繁諅，并列出它出现的次数 (每个数据集 元素唯一)
          * [[a]],3
@@ -84,6 +101,7 @@ public class DemoFP {
     private static JavaRDD<List<String>> getDataSet(String input) {
         SparkConf conf = new SparkConf().setAppName("DemoFP").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(conf);
+        sc.setLogLevel("WARN"); // 过滤日志信息，方便查看输出结果
 
         //加载数据，并将数据通过空格分割
         return sc.textFile(input)
@@ -95,7 +113,7 @@ public class DemoFP {
 
 
     private static void initArgs(String[] args) {
-        if (args.length < 0) {
+        if (args.length < 0) {// 1
             System.out.println("<input data_path>");
             System.exit(-1);
         }
